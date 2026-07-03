@@ -1,0 +1,16 @@
+# Raw data is re-downloadable (see R/01_acquire_data.R) — keep the repo lean
+data/raw/*.csv
+
+# R artifacts
+.Rproj.user/
+.Rhistory
+.RData
+.Rproj
+
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
