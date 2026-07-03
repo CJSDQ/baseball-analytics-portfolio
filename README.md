@@ -35,7 +35,7 @@ baseball-analytics-portfolio/
 ## Roadmap
 
 1. ✅ Setup & data foundations
-2. EDA + advanced metrics deep dive (wOBA, FIP, park factors, aging curves)
+2. ✅ EDA + advanced metrics (regression linear weights, wOBA, FIP, park factors, aging curve)
 3. Projection model: Marcel baseline → weighted regression → ML comparison
 4. Custom WAR variant / scouting index
 5. Dashboard (Shiny) + final report
