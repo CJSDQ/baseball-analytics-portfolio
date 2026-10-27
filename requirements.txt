@@ -1,0 +1,9 @@
+pandas>=2.2
+numpy>=1.26
+scipy
+statsmodels>=0.14
+matplotlib>=3.8
+pyarrow
+pybaseball>=2.2.7
+huggingface_hub>=0.24
+pytest

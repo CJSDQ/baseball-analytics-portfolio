@@ -1,5 +1,7 @@
 # Raw data is re-downloadable (see R/01_acquire_data.R) — keep the repo lean
 data/raw/*.csv
+data/raw/statcast/
+data/raw/opencommand/
 
 # R artifacts
 .Rproj.user/
@@ -14,3 +16,6 @@ __pycache__/
 
 # OS / editor
 .DS_Store
+
+# pytest
+.pytest_cache/
