@@ -16,11 +16,13 @@ baseball-analytics-portfolio/
 │   ├── 00_setup.R      # Package installation & project options
 │   └── 01_acquire_data.R
 ├── python/             # Parallel/validation pipeline
-│   └── 01_acquire_data.py
+│   ├── 01_acquire_data.py
+│   └── 04_decision_window.py   # Statcast bat-tracking: swing profile, timing, pitch-mix breakeven
 ├── output/
 │   ├── figures/        # ggplot2 / matplotlib exports
 │   └── tables/         # Summary tables for the report
 └── reports/            # Final write-up (Rmd/Quarto → pdf/docx)
+    └── decision_window.md      # Methodology for the Decision Window module
 ```
 
 ## Data sources (all public)
@@ -39,3 +41,5 @@ baseball-analytics-portfolio/
 3. Projection model: Marcel baseline → weighted regression → ML comparison
 4. Custom WAR variant / scouting index
 5. Dashboard (Shiny) + final report
+6. Decision Window study — short/fast swings, deep contact, "not early" timing,
+   and the breaking-ball share at which sitting back pays (`python/04_decision_window.py`)

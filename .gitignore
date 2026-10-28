@@ -1,5 +1,9 @@
 # Raw data is re-downloadable (see R/01_acquire_data.R) — keep the repo lean
 data/raw/*.csv
+data/raw/*.csv.gz
+
+# Synthetic pipeline-check outputs from --demo runs
+output/**/*_DEMO.*
 
 # R artifacts
 .Rproj.user/
