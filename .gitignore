@@ -4,6 +4,7 @@ data/raw/*.csv.gz
 
 # Synthetic pipeline-check outputs from --demo runs
 output/**/*_DEMO.*
+output/**/*_DEMO_*
 
 # R artifacts
 .Rproj.user/
@@ -18,3 +19,4 @@ __pycache__/
 
 # OS / editor
 .DS_Store
+.pytest_cache/
