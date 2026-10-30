@@ -2,6 +2,11 @@
 data/raw/*.csv
 data/raw/statcast/
 data/raw/opencommand/
+data/raw/*.csv.gz
+
+# Synthetic pipeline-check outputs from --demo runs
+output/**/*_DEMO.*
+output/**/*_DEMO_*
 
 # R artifacts
 .Rproj.user/
