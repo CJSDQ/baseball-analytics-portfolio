@@ -15,10 +15,13 @@ baseball-analytics-portfolio/
 ├── R/                  # Primary pipeline (mirrors SABR course workflow)
 │   ├── 00_setup.R      # Package installation & project options
 │   └── 01_acquire_data.R
-├── python/             # Parallel/validation pipeline
+├── python/             # Parallel/validation pipeline + Statcast modules
 │   ├── 01_acquire_data.py
-│   ├── 04_decision_window.py   # Statcast bat-tracking: swing profile, timing, pitch-mix breakeven
-│   └── 05_decisions_vs_damage.py  # Where did a hitter break? Decisions → Inputs → Delivery → Contact → Outcomes
+│   ├── statcast_io.py              # cached Baseball Savant pulls (pybaseball)
+│   ├── 04_decision_window.py       # Statcast bat-tracking: swing profile, timing, pitch-mix breakeven
+│   ├── 04_pitch_cost.py            # pitch cost & two-strike foul skill
+│   ├── 05_decisions_vs_damage.py   # Where did a hitter break? Decisions → Inputs → Delivery → Contact → Outcomes
+│   └── 05_opencommand_validation.py # independent test of the OpenCommand metric
 ├── tests/              # pytest: python -m pytest tests -q
 ├── output/
 │   ├── figures/        # ggplot2 / matplotlib exports
@@ -33,8 +36,9 @@ baseball-analytics-portfolio/
 | Source | Access | Used for |
 |---|---|---|
 | Lahman / Chadwick Baseball Databank | `Lahman` R pkg (v14, thru 2025) | Season-level stats, bio, teams |
-| FanGuards leaderboards | `baseballr::fg_batter_leaders()` | wOBA/wRC+/WAR benchmarks |
+| FanGraphs leaderboards | `baseballr::fg_batter_leaders()` | wOBA/wRC+/WAR benchmarks |
 | Baseball Savant (Statcast) | `baseballr::statcast_search()` / `pybaseball` | Pitch-level data, xStats |
+| OpenCommand (Kim, 2026) | Hugging Face `tomdoyo/open-command` | Catcher targets & pitcher command (CC BY-NC-SA 4.0) |
 | Retrosheet | `retrosheet` pkg (optional) | Play-by-play, run expectancy |
 
 ## Roadmap
@@ -48,3 +52,44 @@ baseball-analytics-portfolio/
    and the breaking-ball share at which sitting back pays (`python/04_decision_window.py`)
 7. Decisions vs. Damage — bootstrap diagnostic of where a hitter's production broke,
    replicating Driveline's Kyle Tucker 2026 vs 2023 read (`python/05_decisions_vs_damage.py`)
+8. 🔄 Statcast extensions: pitch cost (04) and command-metric validation (05)
+
+## Statcast modules
+
+### 04 — Pitch cost (`python/04_pitch_cost.py`)
+Velocity buys whiffs; foul balls take outs back. Prompted by Jacob Misiorowski's
+2026 NLDS Game 1 (a 104.8 mph first pitch, out after four innings because San
+Diego kept fouling him off). Measures:
+
+- **Pitchers** — pitches/PA, two-strike foul rate allowed, putaway%, and
+  *pitches/PA over expected* given K% (isolates arms whose outs are expensive).
+- **Hitters** — two-strike foul rate overall and vs 98+ mph fastballs, z-contact,
+  bat speed, swing length; which trait predicts fouling off elite velocity
+  (simple r and standardized joint OLS); split-half reliability of each metric.
+- **Case study** — Misiorowski's NLDS G1 by plate appearance vs his
+  regular-season baseline.
+
+### 05 — OpenCommand validation (`python/05_opencommand_validation.py`)
+OpenCommand scores command as median miss distance from the catcher's glove,
+inferred from broadcast video. This module re-tests it independently:
+correlations with BB%, Stuff+ and xERA (bootstrap CIs, naive vs inferred
+target); whether command adds anything to xERA once Stuff+ and BB% are known
+(nested OLS, partial correlations); year-over-year stability vs BB%; and how
+far glove-ignoring pitchers (e.g. Misiorowski) sit from what their walk rate
+predicts.
+
+> OpenCommand data © Tom Kim, CC BY-NC-SA 4.0 —
+> [github.com/tomdoyo/open-command](https://github.com/tomdoyo/open-command).
+> Used here non-commercially with attribution.
+
+### Running
+
+```bash
+pip install -r requirements.txt
+python python/04_pitch_cost.py --season 2026          # first run downloads Statcast (slow, cached)
+python python/05_opencommand_validation.py --seasons 2025 2026
+python -m pytest tests -q                              # synthetic-data checks, no network
+```
+Outputs land in `output/tables/` and `output/figures/`. Raw downloads go to
+`data/raw/statcast/` and `data/raw/opencommand/` (gitignored).
+
