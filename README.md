@@ -53,6 +53,8 @@ baseball-analytics-portfolio/
 7. Decisions vs. Damage — bootstrap diagnostic of where a hitter's production broke,
    replicating Driveline's Kyle Tucker 2026 vs 2023 read (`python/05_decisions_vs_damage.py`)
 8. 🔄 Statcast extensions: pitch cost (04) and command-metric validation (05)
+9. 🔄 DSL time to debut: survival model on a hitter's first Dominican Summer League
+   season (`python/06_dsl_time_to_debut.py`, method in `reports/dsl_time_to_debut.md`)
 
 ## Statcast modules
 

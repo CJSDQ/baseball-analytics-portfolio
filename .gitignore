@@ -2,6 +2,7 @@
 data/raw/*.csv
 data/raw/statcast/
 data/raw/opencommand/
+data/raw/milb/
 data/raw/*.csv.gz
 
 # Synthetic pipeline-check outputs from --demo runs
