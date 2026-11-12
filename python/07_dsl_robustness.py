@@ -28,7 +28,7 @@ spec.loader.exec_module(dsl)
 
 FEATURE_SETS = {
     "full": ["age_rel", "k_rel", "bb_rel", "iso_rel", "log_pa"],
-    "no_pa": ["age_rel", "k_rel", "bb_rel", "iso_rel"],
+    "no_pa": dsl.FEATURES,
 }
 SPLIT_YEARS = [2013, 2015, 2016]
 

@@ -4,7 +4,8 @@ International signees have no draft pick, so the published MiLB-to-MLB models
 do not apply to them. This module fits a Cox survival model on a hitter's FIRST
 Dominican Summer League season and is built to avoid the leaks in that work:
 
-- Features use the first DSL season only, so at-bats earned later cannot leak in.
+- Features use the first DSL season only, so at-bats earned later cannot leak in,
+  and plate appearances are not a feature at all.
 - K%, BB% and ISO are shrunk toward, and expressed relative to, that season's
   league, because the DSL run environment has changed over time.
 - Players still unresolved are censored, not counted as failures.
@@ -39,7 +40,9 @@ API = ("https://statsapi.mlb.com/api/v1/stats?stats=season&group=hitting"
        "&sportId=16&season={season}&gameType=R&playerPool=ALL&limit=10000"
        "&hydrate=person")
 
-FEATURES = ["age_rel", "k_rel", "bb_rel", "iso_rel", "log_pa"]
+# Plate appearances are left out: they partly reflect which players teams
+# already favored, and module 07 found they add nothing out of time.
+FEATURES = ["age_rel", "k_rel", "bb_rel", "iso_rel"]
 BASELINE_FEATURES = ["age_rel"]
 PRIOR_PA = 100          # shrinkage weight toward the league rate, in PA
 MIN_PA = 50             # minimum PA in the first DSL season
@@ -236,7 +239,7 @@ def score_latest(raw: pd.DataFrame, as_of: int, horizon: int = 6) -> pd.DataFram
     latest = cohort[cohort.season == cohort.season.max()].copy()
     model = fit_cox(cohort[cohort.season < cohort.season.max()], FEATURES)
     latest["p_debut"] = probability_by(model, latest, horizon)
-    columns = ["player_id", "name", "season", "age", "pa"] + FEATURES[:-1] + ["p_debut"]
+    columns = ["player_id", "name", "season", "age", "pa"] + FEATURES + ["p_debut"]
     return latest.sort_values("p_debut", ascending=False)[columns]
 
 
