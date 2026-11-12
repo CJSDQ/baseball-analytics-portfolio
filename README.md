@@ -53,6 +53,8 @@ baseball-analytics-portfolio/
 7. Decisions vs. Damage — bootstrap diagnostic of where a hitter's production broke,
    replicating Driveline's Kyle Tucker 2026 vs 2023 read (`python/05_decisions_vs_damage.py`)
 8. 🔄 Statcast extensions: pitch cost (04) and command-metric validation (05)
+9. 🔄 LIDOM database: rosters linked to stats in every covered league
+   (`python/08_lidom_database.py`, design in `reports/lidom_database.md`)
 
 ## Statcast modules
 

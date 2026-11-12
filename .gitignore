@@ -24,3 +24,7 @@ __pycache__/
 
 # pytest
 .pytest_cache/
+
+# LIDOM database: raw API cache and built SQLite file
+data/raw/lidom/
+data/lidom/
